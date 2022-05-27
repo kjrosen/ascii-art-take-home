@@ -4,12 +4,13 @@ render_canvas with specific height and width
 add_shape to a canvas
 clear_all shapes from a canvas
 create_rectangle
+
 change_fill character for a rectangle
 traverse up, down, left, right"""
 
 
 class Rectangle:
-    """a shape on a canvas, has a width """
+    """a shape on a canvas, """
     
     def __init__(self, width, height, fill, start_x, start_y):
         self.width = width
@@ -25,34 +26,35 @@ class Rectangle:
         self.fill = char
 
     def __repr__(self):
+        """calling object prints the object as it appears"""
 
         shape = (f"{self.fill}" * self.width + "\n") * self.height
         return shape[:-1]
     
 
 class Canvas:
+    """canvas objects store shapes in their coordinates"""
 
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.coordinates = {}
 
-        for i in range(self.height):
-            self.coordinates[i] = [" "]*self.width
+        ## canvas shapes are stored in coordinates as dictionary
+        ## keys are y coordinates, indeces of list values are x coordinates
+        self.coordinates = self.clear_all()
 
 
     def render_canvas(self):
         """prints canvas and its shapes to standard output
         
-        takes height as int and width as int
-        returns returns an array with height-number strings that have width-number length"""
+        goes through canvas' coordinates, where shapes are placed, prints each row"""
 
         for row in self.coordinates.values():
             print("".join(row))
 
 
     def add_shape(self, shape):
-        """adds a shape to the canvas"""
+        """adds a shape to the canvas' coordinates"""
 
         start_x = shape.start_x
         start_y = shape.start_y
@@ -63,11 +65,14 @@ class Canvas:
             self.coordinates[i][start_x:width] = [shape.fill] * shape.width
 
 
-
     def clear_all(self):
         """remove all shapes from a canvas"""
 
-        ##TODO: need to finish render_canvas
+        self.coordinates = {}
+        for i in range(self.height):
+            self.coordinates[i] = [" "]*self.width
+
+        return self.coordinates
 
 
     def create_rectangle(self, start_x, start_y, end_x, end_y, fill_char):
